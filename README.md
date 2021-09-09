@@ -1,4 +1,3 @@
 # digits
-As the image size increases, the accuracy will reduce.
-The accuracy did not change much with changing train/test split 
-![alt text](https://github.com/kiran734/digits/blob/feature/quiz1/quiz1.png?raw=true)
+As the gamma value increases, the accuracy will decrease. 
+![alt text](https://github.com/kiran734/digits/blob/feature/gamma/gamma.png?raw=true)
