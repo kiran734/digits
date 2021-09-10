@@ -29,36 +29,17 @@ data = digits.images.reshape((n_samples, -1))
 
 X_train, X_test, y_train, y_test = train_test_split(
     data, digits.target, test_size=0.3, shuffle=False)
+    
+X_validate, X_test, y_validate, y_test = train_test_split(
+    X_test, y_test, test_size=0.3, shuffle=False)
 
-clf = svm.SVC(gamma=0.00001)
-clf.fit(X_train, y_train)
-predicted = clf.predict(X_test)
-print("Accuracy for gamma 0.00001 is ", metrics.accuracy_score(predicted,y_test))
+gamma_arr=[0.00001,0.0001,0.001,0.01,0.1,10]
+for gamma_iter in gamma_arr:
+	clf = svm.SVC(gamma=gamma_iter)
+	clf.fit(X_train, y_train)
+	predicted = clf.predict(X_validate)
+	print("Accuracy for", gamma_iter,"\t is \t", metrics.accuracy_score(predicted,y_validate))
 
-clf = svm.SVC(gamma=0.0001)
-clf.fit(X_train, y_train)
-predicted = clf.predict(X_test)
-print("Accuracy for gamma 0.0001 is ", metrics.accuracy_score(predicted,y_test))
-
-clf = svm.SVC(gamma=0.001)
-clf.fit(X_train, y_train)
-predicted = clf.predict(X_test)
-print("Accuracy for gamma 0.001 is ", metrics.accuracy_score(predicted,y_test))
-
-clf = svm.SVC(gamma=0.002)
-clf.fit(X_train, y_train)
-predicted = clf.predict(X_test)
-print("Accuracy for gamma 0.002 is ", metrics.accuracy_score(predicted,y_test))
-
-clf = svm.SVC(gamma=0.003)
-clf.fit(X_train, y_train)
-predicted = clf.predict(X_test)
-print("Accuracy for gamma 0.003 is ", metrics.accuracy_score(predicted,y_test))
-
-clf = svm.SVC(gamma=0.004)
-clf.fit(X_train, y_train)
-predicted = clf.predict(X_test)
-print("Accuracy for gamma 0.004 is ", metrics.accuracy_score(predicted,y_test))
 
 
 
