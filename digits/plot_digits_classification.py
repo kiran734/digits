@@ -31,14 +31,20 @@ X_train, X_test, y_train, y_test = train_test_split(
     data, digits.target, test_size=0.3, shuffle=False)
     
 X_validate, X_test, y_validate, y_test = train_test_split(
-    X_test, y_test, test_size=0.3, shuffle=False)
+    X_test, y_test, test_size=0.5, shuffle=False)
 
 gamma_arr=[0.00001,0.0001,0.001,0.01,0.1,10]
 for gamma_iter in gamma_arr:
 	clf = svm.SVC(gamma=gamma_iter)
 	clf.fit(X_train, y_train)
-	predicted = clf.predict(X_validate)
-	print("Accuracy for", gamma_iter,"\t is \t", metrics.accuracy_score(predicted,y_validate))
+	predicted_train = clf.predict(X_train)
+	
+	#clf.fit(X_train, y_train)
+	predicted_validate = clf.predict(X_validate)
+	
+	#clf.fit(X_train, y_train)
+	predicted_test = clf.predict(X_test)
+	print("Accuracy for", gamma_iter,"\t train is \t", metrics.accuracy_score(predicted_train,y_train),"\t\t\t validate is \t", metrics.accuracy_score(predicted_validate,y_validate),"\t test is \t", metrics.accuracy_score(predicted_test,y_test))
 
 
 
