@@ -30,6 +30,16 @@ data = digits.images.reshape((n_samples, -1))
 X_train, X_test, y_train, y_test = train_test_split(
     data, digits.target, test_size=0.3, shuffle=False)
 
+clf = svm.SVC(gamma=0.00001)
+clf.fit(X_train, y_train)
+predicted = clf.predict(X_test)
+print("Accuracy for gamma 0.00001 is ", metrics.accuracy_score(predicted,y_test))
+
+clf = svm.SVC(gamma=0.0001)
+clf.fit(X_train, y_train)
+predicted = clf.predict(X_test)
+print("Accuracy for gamma 0.0001 is ", metrics.accuracy_score(predicted,y_test))
+
 clf = svm.SVC(gamma=0.001)
 clf.fit(X_train, y_train)
 predicted = clf.predict(X_test)
