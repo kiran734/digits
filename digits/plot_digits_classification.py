@@ -34,19 +34,33 @@ X_validate, X_test, y_validate, y_test = train_test_split(
     X_test, y_test, test_size=0.5, shuffle=False)
 
 gamma_arr=[0.00001,0.0001,0.001,0.01,0.1,10]
+max_accuracy=0
+best_gamma=0
 for gamma_iter in gamma_arr:
 	clf = svm.SVC(gamma=gamma_iter)
 	clf.fit(X_train, y_train)
-	predicted_train = clf.predict(X_train)
+	#predicted_train = clf.predict(X_train)
 	
 	#clf.fit(X_train, y_train)
 	predicted_validate = clf.predict(X_validate)
 	
 	#clf.fit(X_train, y_train)
-	predicted_test = clf.predict(X_test)
-	print("Accuracy for", gamma_iter,"\t train is \t", metrics.accuracy_score(predicted_train,y_train),"\t\t\t validate is \t", metrics.accuracy_score(predicted_validate,y_validate),"\t test is \t", metrics.accuracy_score(predicted_test,y_test))
+	#predicted_test = clf.predict(X_test)
+	#print("Accuracy for", gamma_iter,"\t train is \t", metrics.accuracy_score(predicted_train,y_train),"\t\t\t validate is \t", metrics.accuracy_score(predicted_validate,y_validate),"\t test is \t", metrics.accuracy_score(predicted_test,y_test))
+	print("Accuracy for", gamma_iter,"\t\t\t validate is \t", metrics.accuracy_score(predicted_validate,y_validate))
+	if metrics.accuracy_score(predicted_validate,y_validate) > max_accuracy:
+		best_gamma=gamma_iter
+		max_accuracy=metrics.accuracy_score(predicted_validate,y_validate)
+		#train_accuracy = metrics.accuracy_score(predicted_train,y_train)
+		#test_accuracy = metrics.accuracy_score(predicted_test,y_test)
 
-
+clf = svm.SVC(gamma=best_gamma)
+clf.fit(X_train, y_train)
+predicted_test = clf.predict(X_test)
+predicted_train = clf.predict(X_train)
+test_accuracy = metrics.accuracy_score(predicted_test,y_test)
+train_accuracy = metrics.accuracy_score(predicted_train,y_train)
+print("The best gamma is: ", best_gamma," with validation accuracy: ",max_accuracy," train accuracy: ",train_accuracy, " test accuracy: ", test_accuracy)
 
 
 
