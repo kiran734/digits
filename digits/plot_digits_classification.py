@@ -20,6 +20,7 @@ from sklearn import datasets, svm, metrics
 from sklearn.model_selection import train_test_split
 from skimage.transform import rescale, resize, downscale_local_mean
 import numpy as np
+from joblib import dump, load
 
 digits = datasets.load_digits()
 
@@ -34,8 +35,10 @@ X_validate, X_test, y_validate, y_test = train_test_split(
     X_test, y_test, test_size=0.5, shuffle=False)
 
 gamma_arr=[0.00001,0.0001,0.001,0.01,0.1,10]
-max_accuracy=0
+max_accuracy=0.11
 best_gamma=0
+test_size =15
+valid_size = 15
 for gamma_iter in gamma_arr:
 	clf = svm.SVC(gamma=gamma_iter)
 	clf.fit(X_train, y_train)
@@ -49,13 +52,23 @@ for gamma_iter in gamma_arr:
 	#print("Accuracy for", gamma_iter,"\t train is \t", metrics.accuracy_score(predicted_train,y_train),"\t\t\t validate is \t", metrics.accuracy_score(predicted_validate,y_validate),"\t test is \t", metrics.accuracy_score(predicted_test,y_test))
 	print("Accuracy for", gamma_iter,"\t\t\t validate is \t", metrics.accuracy_score(predicted_validate,y_validate))
 	if metrics.accuracy_score(predicted_validate,y_validate) > max_accuracy:
+		output_folder="./models/tt_{}_val_{}_gamma_{}.joblib".format(
+			test_size, valid_size,gamma_iter
+		)
+		#dump(clf, 'filename.joblib') 
+		dump(clf, output_folder) 
 		best_gamma=gamma_iter
 		max_accuracy=metrics.accuracy_score(predicted_validate,y_validate)
 		#train_accuracy = metrics.accuracy_score(predicted_train,y_train)
 		#test_accuracy = metrics.accuracy_score(predicted_test,y_test)
 
-clf = svm.SVC(gamma=best_gamma)
-clf.fit(X_train, y_train)
+
+output_folder="./models/tt_{}_val_{}_gamma_{}.joblib".format(
+			test_size, valid_size,best_gamma
+		)
+
+clf = load(output_folder) 
+#clf.fit(X_train, y_train)
 predicted_test = clf.predict(X_test)
 predicted_train = clf.predict(X_train)
 test_accuracy = metrics.accuracy_score(predicted_test,y_test)
